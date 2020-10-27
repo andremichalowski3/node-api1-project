@@ -55,6 +55,32 @@ server.post("/api/users", (req, res) => {
 
 //CRUD 2: GET
 
+server.get("/api/users", (req, res) => {
+  res.status(200).json(users);
+});
+
+server.get("/api/users/:id", (req, res) => {
+  const { id } = req.params;
+  // console.log(id)
+  const user = users.find((user) => user.id === id);
+  // console.log(user)
+  if (!user) {
+    res
+      .status(404)
+      .json({
+        message: `The user with the specified id: ${id} does not exist.`,
+      });
+  } else if (user) {
+    //Couldn't test this condition
+    res.status(200).json(user);
+  } else {
+    //??? Does this work?
+    res
+      .status(500)
+      .json({ errorMessage: "The user information could not be retrieved." });
+  }
+});
+
 //CRUD 3: DELETE
 
 //CRUD 4: PUT
