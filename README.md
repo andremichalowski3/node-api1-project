@@ -86,7 +86,7 @@ When the client makes a `GET` request to `/api/users/:id`:
 
 ---
 
-When the client makes a `DELETE` request to `/api/users/:id`:
+<!-- When the client makes a `DELETE` request to `/api/users/:id`:
 
 - If the _user_ with the specified `id` is not found:
 
@@ -95,7 +95,7 @@ When the client makes a `DELETE` request to `/api/users/:id`:
 
 - If there's an error in removing the _user_ from the database:
   - respond with HTTP status code `500`.
-  - return the following JSON object: `{ errorMessage: "The user could not be removed" }`.
+  - return the following JSON object: `{ errorMessage: "The user could not be removed" }`. -->
 
 ---
 

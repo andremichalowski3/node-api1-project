@@ -44,12 +44,9 @@ server.post("/api/users", (req, res) => {
     res.status(201).json(newUser);
     //??? Does this condition work
   } else {
-    res
-      .status(500)
-      .json({
-        errorMessage:
-          "There was an error while saving the user to the database",
-      });
+    res.status(500).json({
+      errorMessage: "There was an error while saving the user to the database",
+    });
   }
 });
 
@@ -65,11 +62,9 @@ server.get("/api/users/:id", (req, res) => {
   const user = users.find((user) => user.id === id);
   // console.log(user)
   if (!user) {
-    res
-      .status(404)
-      .json({
-        message: `The user with the specified id: ${id} does not exist.`,
-      });
+    res.status(404).json({
+      message: `The user with the specified id: ${id} does not exist.`,
+    });
   } else if (user) {
     //Couldn't test this condition
     res.status(200).json(user);
@@ -82,6 +77,23 @@ server.get("/api/users/:id", (req, res) => {
 });
 
 //CRUD 3: DELETE
+
+server.delete("/api/users/:id", (req, res) => {
+  const { id } = req.params;
+  //??? specific id can't be found so delete can't be found... tried posting ...
+  try {
+    if (!users.find((user) => user.id === id)) {
+      res.status(404).json({ message: `The user with ${id} does not exist.` });
+    } else {
+      user = user.filter((user) => user.id === id);
+      res
+        .status(200)
+        .json({ message: `The user with ${id} was deleted successfully.` });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "The user could not be removed." });
+  }
+});
 
 //CRUD 4: PUT
 
