@@ -7,7 +7,7 @@ const server = express(); // <<<This is the app
 server.use(express.json()); // plug middlware
 
 // 3- DECIDE A PORT NUMBER:
-const PORT = 3000
+const PORT = 3000;
 
 // 4- FAKE DATA
 let users = [
@@ -24,12 +24,49 @@ server.get("/users", (req, res) => {
   res.status(200).json(users);
 });
 
+//(SEE LAST LINES FOR MORE STEPS AFTER CRUD ENDPOINTS)
+
+//////////////////////////////////////////////////////////////////
+
+//CRUD 1: POST
+
+server.post("/api/users", (req, res) => {
+  const { name, bio } = req.body;
+  // console.log(name, bio)
+  console.log(req.body);
+  if (!name || !bio) {
+    res
+      .status(400)
+      .json({ errorMessage: "Please provide name and bio for the user." });
+  } else if (name && bio) {
+    const newUser = { id: generate(), name, bio };
+    users.push(newUser);
+    res.status(201).json(newUser);
+    //??? Does this condition work
+  } else {
+    res
+      .status(500)
+      .json({
+        errorMessage:
+          "There was an error while saving the user to the database",
+      });
+  }
+});
+
+//CRUD 2: GET
+
+//CRUD 3: DELETE
+
+//CRUD 4: PUT
+
+//////////////////////////////////////////////////////////////////
+
 // [GET, POST...] catch all endpoint (404 resource not found)
-server.use('*', (req, res) => {
-  res.status(404).json({ message: 'Not found!' })
-})
+server.use("*", (req, res) => {
+  res.status(404).json({ message: "Not found!" });
+});
 
 // 6- LISTEN FOR INCOMING REQUESTS
 server.listen(PORT, () => {
-  console.log(`LISTENING ON PORT ${PORT}`)
-})
+  console.log(`LISTENING ON PORT ${PORT}`);
+});
