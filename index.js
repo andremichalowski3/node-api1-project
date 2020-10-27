@@ -16,6 +16,11 @@ let users = [
     name: "Jane Doe", // String, required
     bio: "Not Tarzan's Wife, another Jane", // String, required
   },
+  {
+    id: "1",
+    name: "foo",
+    bio: "bar",
+  },
 ];
 
 // 5- ENDPOINTS
@@ -34,19 +39,22 @@ server.post("/api/users", (req, res) => {
   const { name, bio } = req.body;
   // console.log(name, bio)
   console.log(req.body);
+  // if !(name && bio)
   if (!name || !bio) {
     res
       .status(400)
       .json({ errorMessage: "Please provide name and bio for the user." });
   } else if (name && bio) {
-    const newUser = { id: generate(), name, bio };
-    users.push(newUser);
-    res.status(201).json(newUser);
-    //??? Does this condition work
-  } else {
-    res.status(500).json({
-      errorMessage: "There was an error while saving the user to the database",
-    });
+    try {
+      const newUser = { id: generate(), name, bio };
+      users.push(newUser);
+      res.status(201).json(newUser);
+    } catch (error) {
+      res.status(500).json({
+        errorMessage:
+          "There was an error while saving the user to the database",
+      });
+    }
   }
 });
 
@@ -66,10 +74,8 @@ server.get("/api/users/:id", (req, res) => {
       message: `The user with the specified id: ${id} does not exist.`,
     });
   } else if (user) {
-    //Couldn't test this condition
     res.status(200).json(user);
   } else {
-    //??? Does this work?
     res
       .status(500)
       .json({ errorMessage: "The user information could not be retrieved." });
@@ -80,12 +86,13 @@ server.get("/api/users/:id", (req, res) => {
 
 server.delete("/api/users/:id", (req, res) => {
   const { id } = req.params;
-  //??? specific id can't be found so delete can't be found... tried posting ...
+  // console.log(id);
+  // console.log(users);
   try {
     if (!users.find((user) => user.id === id)) {
       res.status(404).json({ message: `The user with ${id} does not exist.` });
     } else {
-      user = user.filter((user) => user.id === id);
+      users = users.filter((user) => user.id === id);
       res
         .status(200)
         .json({ message: `The user with ${id} was deleted successfully.` });
@@ -96,6 +103,8 @@ server.delete("/api/users/:id", (req, res) => {
 });
 
 //CRUD 4: PUT
+
+
 
 //////////////////////////////////////////////////////////////////
 
