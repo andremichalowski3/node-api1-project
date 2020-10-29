@@ -90,7 +90,9 @@ server.delete("/api/users/:id", (req, res) => {
   // console.log(users);
   try {
     if (!users.find((user) => user.id === id)) {
-      res.status(404).json({ message: `The user with '${id}' does not exist.` });
+      res
+        .status(404)
+        .json({ message: `The user with '${id}' does not exist.` });
     } else {
       users = users.filter((user) => user.id === id);
       res
@@ -105,9 +107,9 @@ server.delete("/api/users/:id", (req, res) => {
 //CRUD 4: PUT
 
 server.put("/api/users/:id", (req, res) => {
-  const { id } = req.params
-  const { name, bio } = req.body
-  const indexOfUser = users.findIndex(user => user.id === id)
+  const { id } = req.params;
+  const { name, bio } = req.body;
+  const indexOfUser = users.findIndex((user) => user.id === id);
   // console.log(req.body)
   // console.log(indexOfUser)
   if (indexOfUser !== -1) {
